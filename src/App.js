@@ -8,11 +8,13 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import ReactMapGL, {Marker} from "react-map-gl";
 
 export default function App() {
-    const [viewport, setViewport] = useState(myCurrentLocation);
+    console.log(process.env.REACT_APP_MAP_KEY)
+    const getSavedLocation = JSON.parse(localStorage.getItem('myCurrentLocation'))
+    const [viewport, setViewport] = useState(getSavedLocation ? getSavedLocation : myCurrentLocation);
     const [mapStyle, setMapStyle] = useState(themes.find(theme => theme.selected).value);
     const [viewportChanged, setViewportChanged] = useState(false);
-    useEffect(()=> {
-        console.log()
+    useEffect(() => {
+        console.log(process.env.REACT_APP_MAP_KEY)
     })
 
     return (
@@ -40,9 +42,7 @@ export default function App() {
                 <ReactMapGL {...viewport}
                             mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
                             mapStyle={mapStyle}
-                            onViewportChange={viewport => {
-                                setViewport(viewport)
-                            }}
+                            onViewportChange={viewport => setViewport(viewport)}
                             width={"95%"}
                             height={"350px"}>
 
